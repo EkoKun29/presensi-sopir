@@ -10,12 +10,12 @@ class Presensi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['face', 'tanggal', 'jam', 'lokasi', 'uuid'];
+    protected $fillable = ['id_user','nama','jabatan','face', 'tanggal', 'jam', 'latitude', 'longitude'];
 
     public static function boot() {
         parent::boot();
-        static::creating(function (Presensi $item) {
-            $item->uuid = Str::uuid()->toString();
+        static::creating(function (Presensi $presensi) {
+            $presensi->uuid = Str::uuid()->toString();
         });
     }
 

@@ -3,12 +3,37 @@
 @section('content')
 
 <style>
-    /* Mengatur video untuk responsif di dalam modal */
+    
     #video {
         width: 100%; /* Menggunakan lebar penuh */
         max-width: 100%; /* Membatasi lebar maksimal */
         height: auto; /* Memastikan aspek rasio tetap */
+        border-radius: 10px;
     }
+
+     .camera-btn {
+        background-color: #007bff; /* Warna biru */
+        color: white;
+        border: none;
+        border-radius: 50%; /* Membuat bentuk lingkaran */
+        width: 70px; /* Lebar lingkaran */
+        height: 70px; /* Tinggi lingkaran */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px; /* Ukuran ikon */
+        cursor: pointer;
+        outline: none;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Tambahkan bayangan */
+    }
+    .camera-btn:active {
+        transform: scale(0.95); /* Efek klik */
+    }
+
+    .camera-btn i {
+        margin: 0;
+    }
+    
     #canvas {
         display: none; /* Sembunyikan canvas */
     }
@@ -24,9 +49,8 @@
     }
 </style>
 
-<div id="content">
-<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+    <div id="content">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
@@ -37,7 +61,6 @@
                     </form>
                     <ul class="navbar-nav ml-auto">
                         <div class="topbar-divider d-none d-sm-block"></div>
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
@@ -56,12 +79,9 @@
                                 </a>
                             </div>
                         </li>
-
                     </ul>
-
                 </nav>
                 <div class="container-fluid">
-             
         <div class="container-fluid">
         <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -98,40 +118,33 @@
                                     </thead>
                                     <?php $no =1 ; ?>
                                     <tbody>
-                                    {{-- @foreach ($scan as $u)
+                                    @foreach ($presensis as $p)
                                         <tr>
                                             <td style="text-align:center">{{ $no++ }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($u->created_at)->format('Y-m-d') }}</td>
-                                            <td>{{ $u->no_seri }}</td>
-                                            <td>{{ $u->no_seri_akhir }}</td>
-                                            <td>{{ $u->jenis_tanaman }}</td>
-                                            <td>{{ $u->varietas }}</td>
-                                            <td>{{ $u->no_kelompok }}</td>
-                                            <td style="text-align:center"><div class="btn-list flex-nowrap">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-success dropdown-toggle align-text-top"
-                                                        data-bs-toggle="dropdown">
-                                                        Aksi
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <button class="dropdown-item text-warning" data-bs-toggle="modal"
-                                                            data-bs-target="#modal-edit-{{ $u->id }}">Edit</button>
-                                                        <a href="{{ route('scan.print', $u['uuid']) }}" class="dropdown-item text-success">Cetak</a>
-                                                        <form action="{{ route('scan.download') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="uuid" value="{{ $u->uuid }}">
-                                                        <button type="submit" class="dropdown-item text-info">Download</button>
-                                                    </form>
+                                            <td>{{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($p->created_at)->format('H:i') }}</td>
+                                            <td>{{ $p->lokasi}}</td>
+                                            <td>
+                                                @php
+                                                    $time = \Carbon\Carbon::parse($p->created_at)->format('H:i');
+                                                @endphp
 
-                                                        <a href="{{ route('scan.delete', $u['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $u->varietas }} Ini ??')"
-                                                            value="Delete" class="dropdown-item text-danger">Hapus</a>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                @if ($time >= '06:00' && $time < '10:00')
+                                                    Pagi
+                                                @elseif ($time >= '12:00' && $time < '15:00')
+                                                    Siang
+                                                @elseif ($time >= '15:01' && $time < '17:59')
+                                                    Sore
+                                                @elseif (($time >= '18:00' && $time <= '23:59') || ($time >= '00:00' && $time < '06:00'))
+                                                    Malam
+                                                @else
+                                                    Tidak diketahui
+                                                @endif
                                             </td>
-                                            @include('scan.edit')
+            
+                                            
                                         </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -146,36 +159,71 @@
 @endsection
 @push('js')
 <script>
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const snap = document.getElementById('snap');
-        const context = canvas.getContext('2d');
+    // Mendapatkan elemen video dan canvas
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const snapButton = document.getElementById('snap');
+    const photoInput = document.getElementById('photoInput');
+    const shutterSound = document.getElementById('shutterSound');
+    const saveButtonContainer = document.getElementById('saveButtonContainer');
+    const closeCanvasButton = document.getElementById('cancelButton');
 
-        // Fungsi untuk menangani kesalahan akses kamera
-        function handleError(error) {
-            console.error('Terjadi kesalahan saat mengakses kamera:', error);
-        }
-
-        // Akses kamera melalui getUserMedia
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function (stream) {
-                video.srcObject = stream; // Tampilkan stream video di elemen <video>
-            })
-            .catch(handleError); // Jika ada error, tangkap dan tampilkan
-
-        // Ketika tombol 'Ambil Foto' ditekan
-        snap.addEventListener('click', function () {
-            context.drawImage(video, 0, 0, 320, 240); // Ambil gambar dari video
-            const dataURL = canvas.toDataURL('image/png'); // Convert gambar ke Base64
-            console.log('Gambar diambil:', dataURL); // Cetak hasil base64 ke console untuk debug
+    // Akses webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            video.srcObject = stream;
+        })
+        .catch(function(err) {
+            console.log("Error accessing webcam: " + err);
         });
 
-        cancelButton.addEventListener('click', function () {
-        if (videoStream) {
-            videoStream.getTracks().forEach(track => track.stop()); // Hentikan semua track dari stream
+    // Ketika tombol "Tangkap Gambar" ditekan
+    snapButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah tindakan default
+        shutterSound.play(); // Memainkan suara shutter
+
+        // Menangkap gambar dari video dan menggambar pada canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Menampilkan canvas dan menyembunyikan video
+        video.style.display = 'none';
+        canvas.style.display = 'block';
+
+        // Menampilkan tombol simpan setelah gambar diambil
+        saveButtonContainer.style.display = 'block';
+
+        // Konversi gambar di canvas menjadi data URI
+        const dataURI = canvas.toDataURL('image/png');
+
+        // Simpan data URI ke dalam input hidden
+        photoInput.value = dataURI;
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                // Mengisi latitude dan longitude ke dalam input hidden
+                document.getElementById('latitudeInput').value = position.coords.latitude;
+                document.getElementById('longitudeInput').value = position.coords.longitude;
+            }, function(error) {
+                console.error("Error obtaining location: ", error);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
         }
+
     });
-    </script>
+    closeCanvasButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Mencegah tindakan default
 
+        // Menyembunyikan canvas dan menampilkan video kembali
+        canvas.style.display = 'none';
+        video.style.display = 'block';
 
+        // Menyembunyikan tombol simpan (tidak perlu sembunyikan tombol close)
+        saveButtonContainer.style.display = 'none';
+
+        // Mengosongkan input foto
+        photoInput.value = '';
+    });
+</script>
 @endpush
