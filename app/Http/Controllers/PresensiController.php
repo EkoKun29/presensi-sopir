@@ -19,7 +19,11 @@ class PresensiController extends Controller
 {
     public function index()
     {
-        $presensis = Presensi::all();
+        if (Auth::user()->role == 'admin') {
+        $presensis = Presensi::paginate('10');
+        }else{
+            $presensis = Presensi::where('id_user', Auth::user()->id)->paginate('10');
+        }
         return view('presensi.index', compact('presensis'));
     }
 
@@ -45,7 +49,6 @@ class PresensiController extends Controller
     // Dapatkan lokasi dan Plus Code
     $lokasiData = $this->getLocationFromCoordinates($latitude, $longitude);
     $lokasi = $lokasiData['location'];
-    $plusCode = $lokasiData['plus_code'] ?? 'Tidak ada kode Plus';
 
     // Buat instance Presensi
     $presensi = new Presensi();
@@ -58,7 +61,6 @@ class PresensiController extends Controller
     $presensi->latitude = $latitude;
     $presensi->longitude = $longitude;
     $presensi->lokasi = $lokasi;
-    $presensi->plus_code = $plusCode; // Pastikan Plus Code disimpan
 
     // Proses penyimpanan gambar
     $fileName = $presensi->uuid . '.png';
@@ -81,7 +83,7 @@ class PresensiController extends Controller
 public function getLocationFromCoordinates($latitude, $longitude) {
     $client = new Client();
     $apiKey = 'f7315dec454445b09088e332d732f439'; // Ganti dengan API key OpenCage Anda
-    $url = "https://api.opencagedata.com/geocode/v1/json?q={$latitude}+{$longitude}&key={$apiKey}&language=id&pretty=1";
+    $url = "https://api.opencagedata.com/geocode/v1/json?q={$latitude},{$longitude}&key={$apiKey}&no_annotations=0";
 
     try {
         // Melakukan request ke OpenCage API

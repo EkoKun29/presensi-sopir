@@ -83,6 +83,74 @@
                 </nav>
                 <div class="container-fluid">
         <div class="container-fluid">
+        @if(Auth::user()->role== 'admin')
+            <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Data Presensi</h6>
+                        </div>
+                        <br>
+                               <form action="#" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                                <div class="input-group">
+                                    <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search fa-fw"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        <div class="card-body">
+                                <div class="table-responsive">
+                                <table id="myTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                                    <thead style="text-align:center">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tanggal</th>
+                                            <th>Nama</th>
+                                            <th>Jabatan</th>
+                                            {{-- <th>Lokasi</th>
+                                            <th>Ket</th> --}}
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <?php $no =1 ; ?>
+                                    <tbody>
+                                    @foreach ($presensis as $p)
+                                        <tr>
+                                            <td style="text-align:center">{{ $no++ }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</td>
+                                            <td>{{ $p->nama }}</td>
+                                            <td>{{ $p->jabatan}}</td>
+                                            <td style="text-align:center"><div class="btn-list flex-nowrap">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-outline-success dropdown-toggle align-text-top"
+                                                        data-bs-toggle="dropdown">
+                                                        Aksi
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <button class="dropdown-item text-warning" data-bs-toggle="modal"
+                                                            data-bs-target="#modal-edit-">Detail</button>
+                                                        <a href="" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p->nama }} Ini ??')"
+                                                            value="Delete" class="dropdown-item text-danger">Hapus</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </td>
+            
+                                            
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                             <div class="d-flex mt-3 justify-content-end">
+                        {{ $presensis->links() }}
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        @else
         <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Data Presensi</h6>
@@ -108,7 +176,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Tanggal</th>
-                                            <th>Jam</th>
+                                            <th>Nama</th>
                                             {{-- <th>Nama</th>
                                             <th>Jabatan</th> --}}
                                             <th>Lokasi</th>
@@ -129,13 +197,13 @@
                                                     $time = \Carbon\Carbon::parse($p->created_at)->format('H:i');
                                                 @endphp
 
-                                                @if ($time >= '06:00' && $time < '10:00')
+                                                @if ($time >= '06:00' && $time < '11:00')
                                                     Pagi
-                                                @elseif ($time >= '12:00' && $time < '15:00')
+                                                @elseif ($time >= '11:01' && $time < '15:00')
                                                     Siang
-                                                @elseif ($time >= '15:01' && $time < '17:59')
+                                                @elseif ($time >= '15:01' && $time < '17:00')
                                                     Sore
-                                                @elseif (($time >= '18:00' && $time <= '23:59') || ($time >= '00:00' && $time < '06:00'))
+                                                @elseif (($time >= '17:01' && $time <= '00:00') || ($time >= '00:01' && $time < '06:00'))
                                                     Malam
                                                 @else
                                                     Tidak diketahui
@@ -149,12 +217,13 @@
                                 </table>
                             </div>
                              <div class="d-flex mt-3 justify-content-end">
-                        {{-- {{ $scan->links() }} --}}
+                        {{ $presensis->links() }}
                     </div>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        @endif
 @include('presensi.create')
 @endsection
 @push('js')
@@ -168,6 +237,8 @@
     const shutterSound = document.getElementById('shutterSound');
     const saveButtonContainer = document.getElementById('saveButtonContainer');
     const closeCanvasButton = document.getElementById('cancelButton');
+    const latitudeInput = document.getElementById('latitudeInput');
+    const longitudeInput = document.getElementById('longitudeInput');
 
     // Akses webcam
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -199,19 +270,34 @@
         // Simpan data URI ke dalam input hidden
         photoInput.value = dataURI;
 
+        // Mendapatkan lokasi pengguna (latitude dan longitude)
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                // Mengisi latitude dan longitude ke dalam input hidden
-                document.getElementById('latitudeInput').value = position.coords.latitude;
-                document.getElementById('longitudeInput').value = position.coords.longitude;
-            }, function(error) {
-                console.error("Error obtaining location: ", error);
-            });
-        } else {
-            alert("Geolocation is not supported by this browser.");
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            // Mengisi latitude dan longitude ke dalam input hidden
+            latitudeInput.value = position.coords.latitude;
+            longitudeInput.value = position.coords.longitude;
+
+            // Tampilkan koordinat di console (opsional, hanya untuk testing)
+            console.log('Latitude: ' + position.coords.latitude + ', Longitude: ' + position.coords.longitude);
+        },
+        function(error) {
+            console.error("Error obtaining location: ", error);
+            alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.");
+        },
+        {
+            enableHighAccuracy: true, // Mengaktifkan akurasi tinggi
+            timeout: 10000, // Waktu maksimal untuk mendapatkan lokasi
+            maximumAge: 0 // Tidak menggunakan cache lokasi lama
         }
+    );
+} else {
+    alert("Geolocation tidak didukung oleh browser Anda.");
+}
 
     });
+
+    // Ketika tombol "Batal" ditekan
     closeCanvasButton.addEventListener('click', function(event) {
         event.preventDefault(); // Mencegah tindakan default
 
@@ -226,4 +312,6 @@
         photoInput.value = '';
     });
 </script>
+
+
 @endpush

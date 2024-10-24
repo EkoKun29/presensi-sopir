@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('face'); // Kolom untuk menyimpan data face (misal path image)
             $table->date('tanggal'); // Tanggal presensi
             $table->time('jam'); // Waktu presensi
-            $table->decimal('latitude', 10, 7)->nullable(); // Kolom latitude
-            $table->decimal('longitude', 10, 7)->nullable(); // Kolom longitude
+            $table->decimal('latitude', 18, 15)->nullable(); // Kolom latitude
+            $table->decimal('longitude', 18, 15)->nullable(); // Kolom longitude
+            $table->string('lokasi')->nullable();
             $table->uuid('uuid'); // UUID
             $table->timestamps();
         });
