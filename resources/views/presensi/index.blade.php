@@ -128,7 +128,7 @@
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <!-- Tombol Detail -->
-                                        <a class="dropdown-item text-warning" href="{{ route('presensi.show', ['nama' => $p->nama, 'tanggal' => $p->tanggal]) }}">
+                                        <a class="dropdown-item text-warning" href="{{ route('presensi.show.detail', ['nama' => $p->nama, 'tanggal' => $p->tanggal]) }}">
                                             Detail
                                         </a>
 
