@@ -20,7 +20,9 @@ class PresensiController extends Controller
     public function index()
     {
         if (Auth::user()->role == 'admin') {
-        $presensis = Presensi::paginate('10');
+            $presensis = Presensi::select('nama', 'tanggal', 'jabatan')
+                        ->groupBy('nama', 'tanggal', 'jabatan')
+                        ->paginate(10);
         }else{
             $presensis = Presensi::where('id_user', Auth::user()->id)->paginate('10');
         }
@@ -46,7 +48,7 @@ class PresensiController extends Controller
     $latitude = $request->latitude;
     $longitude = $request->longitude;
 
-    // Dapatkan lokasi dan Plus Code
+    // Dapatkan lokasi
     $lokasiData = $this->getLocationFromCoordinates($latitude, $longitude);
     $lokasi = $lokasiData['location'];
 
@@ -63,20 +65,20 @@ class PresensiController extends Controller
     $presensi->lokasi = $lokasi;
 
     // Proses penyimpanan gambar
-    $fileName = $presensi->uuid . '.png';
-    $imagePath = $fileName;
+    $fileName = $presensi->uuid . '.png'; // Nama file
+    $imagePath = 'public/' . $fileName; // Path untuk disimpan di storage
     $image = str_replace('data:image/png;base64,', '', $imageData);
     $image = str_replace(' ', '+', $image);
-    Storage::disk('public')->put($imagePath, base64_decode($image));
 
-    // Simpan data ke database
-    $presensi->face = $imagePath;
+    // Simpan gambar di storage/app/public
+    Storage::put($imagePath, base64_decode($image)); // Simpan gambar
+
+    // Simpan nama file ke database
+    $presensi->face = $fileName; // Simpan hanya nama file
     $presensi->save();
 
     return redirect()->route('presensi.index')->with('success', 'Presensi berhasil disimpan!');
 }
-
-
 
 
 
@@ -130,6 +132,41 @@ public function getLocationFromCoordinates($latitude, $longitude) {
         ];
     }
 }
+
+public function show($nama, $tanggal)
+    {
+        // Ambil semua entri presensi berdasarkan nama dan tanggal
+        $dataPresensi = Presensi::where('nama', $nama)
+            ->where('tanggal', $tanggal)
+            ->get();
+
+        // Pastikan ada data yang ditemukan
+        if ($dataPresensi->isEmpty()) {
+            return redirect()->route('presensi.index')->with('error', 'Data presensi tidak ditemukan!');
+        }
+
+        return view('presensi.show', compact('dataPresensi'));
+    }
+
+    public function search(Request $request)
+    {
+        if ($request->has('search')) {
+            $searchTerm = $request->search;
+
+            $presensi = Presensi::where(function ($query) use ($searchTerm) {
+                $query->where('nama', 'like', '%' . $searchTerm . '%')
+                ->orWhere('tanggal', 'like', '%' . $searchTerm . '%');
+            })
+            ->paginate(10);
+
+            // Keep the search term when paginating
+            $presensi->appends(['search' => $searchTerm]);
+        } else {
+
+        }
+
+        return view('presensi.index', compact('presensi'))->with('i', (request()->input('page', 1) - 1) * 10);
+    }
 
 
 }

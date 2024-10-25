@@ -1,40 +1,63 @@
-<div class="modal modal-blur fade" id="modal-edit-{{ $p->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Data Presensi</h5>
-            </div>
-            <form action="#" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="col">
-                            <div class="mb-3">
-                                <label class="form-label">No. Induk</label>
-                                <input type="text" name="induk" class="form-control" placeholder="Nomor Induk" value="{{ $u->no_induk }}" required>
-                            </div>
-                            
-                        </div>
-                        <div class="col">
-                            {{-- <div class="mb-3">
-                                <label class="form-label">Biji Gulma</label>
-                                <input type="number" step="any" name="biji" class="form-control" placeholder="Biji Gulma" value="{{ $u->biji_gulma }}" required>
-                            </div> --}}
-                        </div>
-                    </div>
-                </div>
+@extends('layouts.app')
 
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-outline-danger" data-bs-dismiss="modal">
-                        Cancel
+@section('content')
+<div id="content">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+        </button>
+        <ul class="navbar-nav ml-auto">
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
+                    <img class="img-profile rounded-circle" src="../../assets/img/undraw_profile.svg">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
                     </a>
-                    <button type="submit" class="btn btn-primary ms-auto">
-                        Simpan
-                    </button>
-            </form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <h6 class="m-0 font-weight-bold text-primary">Rekap Data</h6>
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <!-- Tampilkan detail data di sini -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Lokasi</th>
+                            <th>Waktu</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($dataPresensi as $presensi) <!-- Ganti dengan nama variabel yang sesuai -->
+                        <tr>
+                        <td>
+                                    <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: auto;">
+
+                            </td>
+                            <td>{{ $presensi->lokasi }}</td>
+                            <td>{{ $presensi->jam }}</td>
+                            
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    
 </div>
 
 
+@endsection

@@ -37,13 +37,26 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('home') }}">
                     <i class="fas fa-light fa-house-user"></i>
-                    <span>Dashboard</span></a>
+                    <span>Home</span></a>
             </li>
+            @if(Auth::user()->role== 'admin')
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('tambah-user.index') }}">
+                    <i class="fas fa-light fa-file-excel"></i>
+                    <span>Tambah User</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('presensi.index') }}">
+                    <i class="fas fa-light fa-qrcode"></i>
+                    <span>Rekap Presensi</span></a>
+            </li>
+            @else
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('presensi.index') }}">
                     <i class="fas fa-light fa-qrcode"></i>
                     <span>Absen</span></a>
             </li>
+            @endif
             </ul>
             {{-- <li class="nav-item active">
                 <a class="nav-link" href="#">

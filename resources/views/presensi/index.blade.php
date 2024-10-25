@@ -85,71 +85,72 @@
         <div class="container-fluid">
         @if(Auth::user()->role== 'admin')
             <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Presensi</h6>
-                        </div>
-                        <br>
-                               <form action="#" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                                <div class="input-group">
-                                    <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default">
-                                            <i class="fas fa-search fa-fw"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        <div class="card-body">
-                                <div class="table-responsive">
-                                <table id="myTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
-                                    <thead style="text-align:center">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Tanggal</th>
-                                            <th>Nama</th>
-                                            <th>Jabatan</th>
-                                            {{-- <th>Lokasi</th>
-                                            <th>Ket</th> --}}
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <?php $no =1 ; ?>
-                                    <tbody>
-                                    @foreach ($presensis as $p)
-                                        <tr>
-                                            <td style="text-align:center">{{ $no++ }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</td>
-                                            <td>{{ $p->nama }}</td>
-                                            <td>{{ $p->jabatan}}</td>
-                                            <td style="text-align:center"><div class="btn-list flex-nowrap">
-                                                <div class="dropdown">
-                                                    <button class="btn btn-outline-success dropdown-toggle align-text-top"
-                                                        data-bs-toggle="dropdown">
-                                                        Aksi
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <button class="dropdown-item text-warning" data-bs-toggle="modal"
-                                                            data-bs-target="#modal-edit-">Detail</button>
-                                                        <a href="" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p->nama }} Ini ??')"
-                                                            value="Delete" class="dropdown-item text-danger">Hapus</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            </td>
-            
-                                            
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                             <div class="d-flex mt-3 justify-content-end">
-                        {{ $presensis->links() }}
-                    </div>
-                </div>
-            </div>
+    <div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Data Presensi</h6>
+    </div>
+    <br>
+    <form action="{{ route('absensi.search') }}" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+        <div class="input-group">
+            <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-default">
+                    <i class="fas fa-search fa-fw"></i>
+                </button>
             </div>
         </div>
+    </form>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="myTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                <thead style="text-align:center">
+                    <tr>
+                        <th>#</th>
+                        <th>Tanggal</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $no = 1; ?>
+                    @foreach ($presensis as $p)
+                    <tr>
+                        <td style="text-align:center">{{ $no++ }}</td>
+                        <td>{{ \Carbon\Carbon::parse($p->tanggal)->format('Y-m-d') }}</td>
+                        <td>{{ $p->nama }}</td>
+                        <td>{{ $p->jabatan }}</td>
+                        <td style="text-align:center">
+                            <div class="btn-list flex-nowrap">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-success dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+                                        Aksi
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <!-- Tombol Detail -->
+                                        <a class="dropdown-item text-warning" href="{{ route('presensi.show', ['nama' => $p->nama, 'tanggal' => $p->tanggal]) }}">
+                                            Detail
+                                        </a>
+
+                                        <a href="#" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p->nama }} Ini ??')"
+                                            class="dropdown-item text-danger">Hapus</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex mt-3 justify-content-end">
+            {{ $presensis->links() }} <!-- Jika Anda menggunakan pagination -->
+        </div>
+    </div>
+</div>
+
+
         @else
         <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -159,7 +160,7 @@
                             </a>
                         </div>
                         <br>
-                               <form action="#" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                               <form action="{{ route('absensi.search') }}" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                                 <div class="input-group">
                                     <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
                                     <div class="input-group-append">
@@ -176,12 +177,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Tanggal</th>
-                                            <th>Nama</th>
-                                            {{-- <th>Nama</th>
-                                            <th>Jabatan</th> --}}
+                                            <th>Jam</th>
                                             <th>Lokasi</th>
                                             <th>Ket</th>
-                                            {{-- <th>Aksi</th> --}}
                                         </tr>
                                     </thead>
                                     <?php $no =1 ; ?>

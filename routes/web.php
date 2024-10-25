@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,18 @@ Route::get('/', function () {
 
 
 Route::resource('presensi', PresensiController::class);
+Route::get('presensi/search', [PresensiController::class, 'search'])->name('absensi.search');
+Route::get('presensi/{nama}/{tanggal}', [PresensiController::class, 'show'])->name('presensi.show');
+
+
+Route::resource('tambah-user', UserController::class);
+Route::get('search', [UserController::class, 'search'])->name('user.search');
+Route::get('tambah-user/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
+
+
+
+
+
 
 //Logout
 Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('_logout');
