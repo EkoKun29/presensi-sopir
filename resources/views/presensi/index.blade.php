@@ -87,7 +87,7 @@
             <div class="card shadow mb-4">
     <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">Data Rekap Presensi All</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Data Rekap Presensi Lapangan</h6>
     </div>
     <br>
     <form action="{{ route('absensi.search') }}" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
