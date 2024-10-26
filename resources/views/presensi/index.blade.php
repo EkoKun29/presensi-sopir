@@ -131,8 +131,10 @@
                                         <a class="dropdown-item text-warning" href="{{ route('presensi.show.detail', ['nama' => $p->nama, 'tanggal' => $p->tanggal]) }}">
                                             Detail
                                         </a>
-
-                                        <a href="#" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p->nama }} Ini ??')"
+                                        <a href="{{ route('presensi.delete.detail', ['nama' => $p['nama'], 'tanggal' => $p['tanggal']]) }}" 
+                                            id="btn-delete-post" 
+                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p['nama'] }} Ini ??')" 
+                                            value="Delete" 
                                             class="dropdown-item text-danger">Hapus</a>
                                     </div>
                                 </div>

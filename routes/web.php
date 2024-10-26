@@ -29,6 +29,7 @@ Route::get('/', function () {
 Route::resource('presensi', PresensiController::class);
 Route::get('presensi/search', [PresensiController::class, 'search'])->name('absensi.search');
 Route::get('presensi/{nama}/{tanggal}', [PresensiController::class, 'show'])->name('presensi.show.detail');
+Route::get('presensi/{nama}/{tanggal}/delete', [PresensiController::class, 'delete'])->name('presensi.delete.detail');
 
 
 Route::resource('tambah-user', UserController::class);

@@ -148,6 +148,17 @@ public function show($nama, $tanggal)
         return view('presensi.show', compact('dataPresensi'));
     }
 
+    public function delete($nama, $tanggal)
+{
+    // Menghapus semua entri presensi berdasarkan nama dan tanggal
+    Presensi::where('nama', $nama)
+        ->where('tanggal', $tanggal)
+        ->delete();
+    
+    return redirect()->back()->with('success', 'Data berhasil dihapus');
+}
+
+
     public function search(Request $request)
     {
         if ($request->has('search')) {
