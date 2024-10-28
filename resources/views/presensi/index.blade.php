@@ -262,6 +262,10 @@
         event.preventDefault(); // Mencegah tindakan default
         shutterSound.play(); // Memainkan suara shutter
 
+        // Set ukuran canvas agar sesuai dengan video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
         // Set ulang transformasi canvas untuk memastikan tidak ada perubahan sebelumnya
         context.setTransform(1, 0, 0, 1, 0, 0);
         
