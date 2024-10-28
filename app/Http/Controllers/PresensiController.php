@@ -22,12 +22,16 @@ class PresensiController extends Controller
         if (Auth::user()->role == 'admin') {
             $presensis = Presensi::select('nama', 'tanggal', 'jabatan')
                         ->groupBy('nama', 'tanggal', 'jabatan')
+                        ->orderBy('tanggal', 'desc') // Mengurutkan berdasarkan tanggal terbaru
                         ->paginate(10);
-        }else{
-            $presensis = Presensi::where('id_user', Auth::user()->id)->paginate('10');
+        } else {
+            $presensis = Presensi::where('id_user', Auth::user()->id)
+                        ->orderBy('tanggal', 'desc') // Mengurutkan berdasarkan tanggal terbaru
+                        ->paginate(10);
         }
         return view('presensi.index', compact('presensis'));
     }
+
 
     public function create()
     {

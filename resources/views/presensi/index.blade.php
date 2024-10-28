@@ -4,11 +4,22 @@
 
 <style>
     
-    #video {
-        width: 100%; /* Menggunakan lebar penuh */
-        max-width: 100%; /* Membatasi lebar maksimal */
-        height: auto; /* Memastikan aspek rasio tetap */
-        border-radius: 10px;
+    #video { 
+    width: 100%;            /* Lebar penuh layar */
+    max-width: 100%;        /* Batas lebar maksimal 100% */
+    height: auto;           /* Aspek rasio tetap */
+    border-radius: 10px;    /* Sudut membulat */
+    object-fit: cover;      /* Menjaga rasio video dalam elemen */
+    transform: scaleX(-1);  /* Efek mirror pada video */
+    }
+
+    #canvas {
+        width: 100%;            /* Menyesuaikan lebar dengan layar */
+        max-width: 100%;        /* Batas lebar maksimal 100% */
+        height: auto;           /* Aspek rasio tetap */
+        border-radius: 10px;    /* Sama dengan video */
+        transform: scaleX(-1);  /* Efek mirror pada hasil gambar */
+        display: none;          /* Sembunyikan canvas sampai dibutuhkan */
     }
 
      .camera-btn {
@@ -34,9 +45,6 @@
         margin: 0;
     }
     
-    #canvas {
-        display: none; /* Sembunyikan canvas */
-    }
     .modal-body {
         display: flex;
         flex-direction: column;
@@ -236,9 +244,9 @@
     const photoInput = document.getElementById('photoInput');
     const shutterSound = document.getElementById('shutterSound');
     const saveButtonContainer = document.getElementById('saveButtonContainer');
-    const closeCanvasButton = document.getElementById('cancelButton');
     const latitudeInput = document.getElementById('latitudeInput');
     const longitudeInput = document.getElementById('longitudeInput');
+    const modalReport = document.getElementById('modalReport');
 
     // Akses webcam
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -254,6 +262,9 @@
         event.preventDefault(); // Mencegah tindakan default
         shutterSound.play(); // Memainkan suara shutter
 
+        // Set ulang transformasi canvas untuk memastikan tidak ada perubahan sebelumnya
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        
         // Menangkap gambar dari video dan menggambar pada canvas
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
