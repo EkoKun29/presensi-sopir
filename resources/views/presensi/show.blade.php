@@ -42,8 +42,7 @@
                         @foreach($dataPresensi as $presensi) <!-- Ganti dengan nama variabel yang sesuai -->
                         <tr>
                         <td>
-                                    <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px;">
-
+                                    <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px; transform: scaleX(1);">
                             </td>
                             <td>{{ $presensi->lokasi }}</td>
                             <td>{{ $presensi->jam }}</td>

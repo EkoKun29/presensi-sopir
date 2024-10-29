@@ -98,7 +98,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Rekap Presensi Lapangan</h6>
     </div>
     <br>
-    <form action="{{ route('absensi.search') }}" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <form action="{{ route('absensi.search') }}" method="GET" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
         <div class="input-group">
             <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
@@ -170,7 +170,7 @@
                             </a>
                         </div>
                         <br>
-                               <form action="{{ route('absensi.search') }}" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                               {{-- <form action="{{ route('absensi.search') }}" method="GET" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                                 <div class="input-group">
                                     <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
                                     <div class="input-group-append">
@@ -179,7 +179,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form> --}}
                         <div class="card-body">
                                 <div class="table-responsive">
                                 <table id="myTable" class="table table-striped table-bordered" width="100%" cellspacing="0">
@@ -211,7 +211,7 @@
                                                     Siang
                                                 @elseif ($time >= '15:01' && $time < '17:00')
                                                     Sore
-                                                @elseif (($time >= '17:01' && $time <= '00:00') || ($time >= '00:01' && $time < '06:00'))
+                                                @elseif (($time >= '17:01' && $time <= '24:00') || ($time >= '00:01' && $time < '06:00'))
                                                     Malam
                                                 @else
                                                     Tidak diketahui
@@ -268,7 +268,7 @@
 
         // Set ulang transformasi canvas untuk memastikan tidak ada perubahan sebelumnya
         context.setTransform(1, 0, 0, 1, 0, 0);
-        
+
         // Menangkap gambar dari video dan menggambar pada canvas
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 

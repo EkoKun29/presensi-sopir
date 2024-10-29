@@ -38,6 +38,36 @@ class PresensiController extends Controller
         return view('presensi.create');
     }
 
+    public function search(Request $request)
+{
+    $query = Presensi::query();
+
+    if ($request->has('search')) {
+        $searchTerm = $request->search;
+
+        // Menambahkan kondisi pencarian
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('nama', 'like', '%' . $searchTerm . '%')
+              ->orWhere('tanggal', 'like', '%' . $searchTerm . '%');
+        });
+    }
+
+    // Jika pengguna adalah admin, Anda dapat menambahkan logika khusus di sini
+    if (auth()->user()->role == 'admin') {
+        // Misalnya, jika Anda ingin mengambil data tertentu untuk admin
+        $presensi = $query->paginate(10);
+    } else {
+        // Ambil data untuk pengguna selain admin
+        $presensi = $query->where('tanggal', auth()->user()->name)->paginate(10);
+    }
+
+    // Menyimpan istilah pencarian saat melakukan paginasi
+    $presensi->appends(['search' => $request->search]);
+
+    return view('presensi.index', compact('presensi'))->with('i', (request()->input('page', 1) - 1) * 10);
+}
+
+    
     public function store(Request $request)
 {
     // Validasi data yang diterima
@@ -161,27 +191,6 @@ public function show($nama, $tanggal)
     
     return redirect()->back()->with('success', 'Data berhasil dihapus');
 }
-
-
-    public function search(Request $request)
-    {
-        if ($request->has('search')) {
-            $searchTerm = $request->search;
-
-            $presensi = Presensi::where(function ($query) use ($searchTerm) {
-                $query->where('nama', 'like', '%' . $searchTerm . '%')
-                ->orWhere('tanggal', 'like', '%' . $searchTerm . '%');
-            })
-            ->paginate(10);
-
-            // Keep the search term when paginating
-            $presensi->appends(['search' => $searchTerm]);
-        } else {
-
-        }
-
-        return view('presensi.index', compact('presensi'))->with('i', (request()->input('page', 1) - 1) * 10);
-    }
 
 
 }
