@@ -21,11 +21,14 @@ use App\Http\Controllers\UserController;
 Auth::routes();
 Route::get('/log-in', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('_login');
 Route::post('/log-in-post', [App\Http\Controllers\Auth\LoginController::class, 'posts'])->name('_postlogin');
+//Logout
+Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('_logout');
 Route::get('/', function () {
     return view('auth.login');
 })->name('root-login');
 
 
+Route::middleware(['auth'])->group(function () {
 Route::resource('presensi', PresensiController::class);
 Route::get('presensi/search', [PresensiController::class, 'search'])->name('absensi.search');
 Route::get('presensi/{nama}/{tanggal}', [PresensiController::class, 'show'])->name('presensi.show.detail');
@@ -36,8 +39,9 @@ Route::resource('tambah-user', UserController::class);
 Route::get('search', [UserController::class, 'search'])->name('user.search');
 Route::get('tambah-user/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
 
-//Logout
-Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('_logout');
+
 
 //Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+});

@@ -234,7 +234,7 @@
         @endif
 @include('presensi.create')
 @endsection
-@push('js')
+{{-- @push('js')
 <script>
     // Mendapatkan elemen video dan canvas
     const video = document.getElementById('video');
@@ -327,6 +327,79 @@
         photoInput.value = '';
     });
 </script>
+@endpush --}}
+@push('js')
+<script>
+    // Element reference
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    const snapButton = document.getElementById('snap');
+    const photoInput = document.getElementById('photoInput');
+    const shutterSound = document.getElementById('shutterSound');
+    const saveButtonContainer = document.getElementById('saveButtonContainer');
+    const latitudeInput = document.getElementById('latitudeInput');
+    const longitudeInput = document.getElementById('longitudeInput');
+    const closeCanvasButton = document.getElementById('closeCanvasButton');
 
+    // Accessing the webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+            video.srcObject = stream;
+        })
+        .catch((err) => {
+            console.error("Error accessing webcam:", err);
+        });
 
+    // Capture image when "Capture Image" button is clicked
+    snapButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        shutterSound.play();
+
+        // Set canvas size to video size and reset transformations
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.setTransform(1, 0, 0, 1, 0, 0);
+
+        // Draw image on canvas and switch visibility
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        video.style.display = 'none';
+        canvas.style.display = 'block';
+        saveButtonContainer.style.display = 'block';
+
+        // Convert canvas to data URI and store in hidden input
+        photoInput.value = canvas.toDataURL('image/png');
+
+        // Retrieve location (latitude and longitude)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    latitudeInput.value = position.coords.latitude;
+                    longitudeInput.value = position.coords.longitude;
+                    console.log('Latitude:', position.coords.latitude, 'Longitude:', position.coords.longitude);
+                },
+                (error) => {
+                    console.error("Error obtaining location:", error);
+                    alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.");
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            alert("Geolocation tidak didukung oleh browser Anda.");
+        }
+    });
+
+    // Close canvas view when "Cancel" button is clicked
+    closeCanvasButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        canvas.style.display = 'none';
+        video.style.display = 'block';
+        saveButtonContainer.style.display = 'none';
+        photoInput.value = '';
+    });
+</script>
 @endpush
