@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ExportDataController extends Controller
 {
-    public function presensi($startDate, $endDate){
+    public function absen($startDate, $endDate){
         $rekap_presensi = Presensi::whereBetween('created_at', [$startDate, $endDate])->get();
         return response()->json($rekap_presensi);
     }
