@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Presensi;
 use App\Models\PresensiPulang;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -14,44 +13,32 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\DB;
 
-
-class PresensiController extends Controller
+class PresensiPulangController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->role == 'admin') {
-            $presensis = DB::table('presensis')
-                ->join('presensi_pulangs', function ($join) {
-                    $join->on('presensis.nama', '=', 'presensi_pulangs.nama')
-                        ->on('presensis.tanggal', '=', 'presensi_pulangs.tanggal')
-                        ->on('presensis.jabatan', '=', 'presensi_pulangs.jabatan');
-                })
-                ->select('presensis.nama', 'presensis.tanggal', 'presensis.jabatan')
-                ->groupBy('presensis.nama', 'presensis.tanggal', 'presensis.jabatan')
-                ->orderBy('presensis.tanggal', 'desc')
-                ->paginate(10);
-
-            $presensisArray = $presensis->items(); // Konversi data paginasi ke array
-
-        } else {
-            $presensis = Presensi::where('id_user', Auth::user()->id)
+        // if (Auth::user()->role == 'admin') {
+        //     $presensis = PresensiPulang::select('nama', 'tanggal', 'jabatan')
+        //                 ->groupBy('nama', 'tanggal', 'jabatan')
+        //                 ->orderBy('tanggal', 'desc') // Mengurutkan berdasarkan tanggal terbaru
+        //                 ->paginate(10);
+        // } else {
+            $presensis = PresensiPulang::where('id_user', Auth::user()->id)
                         ->orderBy('tanggal', 'desc') // Mengurutkan berdasarkan tanggal terbaru
                         ->paginate(10);
-        }
-        return view('presensi.index', compact('presensis'));
+        return view('presensi-pulang.index', compact('presensis'));
     }
 
 
     public function create()
     {
-        return view('presensi.create');
+        return view('presensi-pulang.create');
     }
 
     public function search(Request $request)
 {
-    $query = Presensi::query();
+    $query = PresensiPulang::query();
 
     if ($request->has('search')) {
         $searchTerm = $request->search;
@@ -75,7 +62,7 @@ class PresensiController extends Controller
     // Menyimpan istilah pencarian saat melakukan paginasi
     $presensi->appends(['search' => $request->search]);
 
-    return view('presensi.index', compact('presensi'))->with('i', (request()->input('page', 1) - 1) * 10);
+    return view('presensi-pulang.index', compact('presensi'))->with('i', (request()->input('page', 1) - 1) * 10);
 }
 
     
@@ -98,7 +85,7 @@ class PresensiController extends Controller
     $lokasi = $lokasiData['location'];
 
     // Buat instance Presensi
-    $presensi = new Presensi();
+    $presensi = new PresensiPulang();
     $presensi->uuid = Str::uuid();
     $presensi->id_user = Auth::user()->id;
     $presensi->nama = Auth::user()->name;
@@ -122,7 +109,7 @@ class PresensiController extends Controller
     $presensi->face = $fileName; // Simpan hanya nama file
     $presensi->save();
 
-    return redirect()->route('presensi.index')->with('success', 'Presensi berhasil disimpan!');
+    return redirect()->route('presensi-pulang.index')->with('success', 'Presensi berhasil disimpan!');
 }
 
 
@@ -178,37 +165,24 @@ public function getLocationFromCoordinates($latitude, $longitude) {
     }
 }
 
-public function show($nama, $tanggal)
-{
-    // Ambil semua entri presensi berdasarkan nama dan tanggal
-    $dataPresensi = Presensi::where('nama', $nama)
-        ->where('tanggal', $tanggal)
-        ->get();
+// public function show($nama, $tanggal)
+//     {
+//         // Ambil semua entri presensi berdasarkan nama dan tanggal
+//         $dataPresensi = PresensiPulang::where('nama', $nama)
+//             ->where('tanggal', $tanggal)
+//             ->get();
 
-    // Ambil semua entri dari tabel presensi_pulang berdasarkan nama dan tanggal
-    $dataPresensiPulang = PresensiPulang::where('nama', $nama)
-        ->where('tanggal', $tanggal)
-        ->get();
+//         // Pastikan ada data yang ditemukan
+//         if ($dataPresensi->isEmpty()) {
+//             return redirect()->route('presensi-pulang.index')->with('error', 'Data presensi tidak ditemukan!');
+//         }
 
-    // Pastikan ada data yang ditemukan di salah satu atau kedua tabel
-    if ($dataPresensi->isEmpty() && $dataPresensiPulang->isEmpty()) {
-        return redirect()->route('presensi.index')->with('error', 'Data presensi tidak ditemukan!');
-    }
+//         return view('presensi-pulang.show', compact('dataPresensi'));
+//     }
 
-    // Kirimkan kedua data ke view
-    return view('presensi.show', compact('dataPresensi', 'dataPresensiPulang'));
-}
-
-
-
-public function delete($nama, $tanggal)
+    public function delete($nama, $tanggal)
 {
     // Menghapus semua entri presensi berdasarkan nama dan tanggal
-    Presensi::where('nama', $nama)
-        ->where('tanggal', $tanggal)
-        ->delete();
-
-    // Menghapus semua entri presensi_pulang berdasarkan nama dan tanggal
     PresensiPulang::where('nama', $nama)
         ->where('tanggal', $tanggal)
         ->delete();
@@ -217,7 +191,3 @@ public function delete($nama, $tanggal)
 }
 
 }
-
-
-
-

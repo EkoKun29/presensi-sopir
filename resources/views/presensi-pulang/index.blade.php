@@ -98,7 +98,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Rekap Presensi Lapangan</h6>
     </div>
     <br>
-    <form action="{{ route('absensi.search') }}" method="GET" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+    <form action="{{ route('absensi-pulang.search') }}" method="GET" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
         <div class="input-group">
             <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
@@ -139,14 +139,11 @@
                                         <a class="dropdown-item text-warning" href="{{ route('presensi.show.detail', ['nama' => $p->nama, 'tanggal' => $p->tanggal]) }}">
                                             Detail
                                         </a>
-                                        <a href="{{ route('presensi.delete.detail', ['nama' => $p->nama, 'tanggal' => $p->tanggal]) }}" 
+                                        <a href="{{ route('presensi-pulang.delete.detail', ['nama' => $p['nama'], 'tanggal' => $p['tanggal']]) }}" 
                                             id="btn-delete-post" 
-                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p->nama }} Ini ??')" 
+                                            onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $p['nama'] }} Ini ??')" 
                                             value="Delete" 
-                                            class="dropdown-item text-danger">
-                                            Hapus
-                                        </a>
-
+                                            class="dropdown-item text-danger">Hapus</a>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +155,7 @@
             </table>
         </div>
         <div class="d-flex mt-3 justify-content-end">
-            {{ $presensis->links() }} <!-- Jika Anda menggunakan pagination -->
+            {{ $presensis->links() }}
         </div>
     </div>
 </div>
@@ -167,9 +164,9 @@
         @else
         <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Data Presensi</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Data Presensi Pulang</h6>
                             <a href="#" class="btn btn-sm btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modal-report">
-                                <i class="fas fa-plus fa-sm text-white-50"></i> PRESENSI
+                                <i class="fas fa-plus fa-sm text-white-50"></i> PRESENSI PULANG
                             </a>
                         </div>
                         <br>
@@ -235,7 +232,7 @@
             </div>
         </div>
         @endif
-@include('presensi.create')
+@include('presensi-pulang.create')
 @endsection
 @push('js')
 <script>

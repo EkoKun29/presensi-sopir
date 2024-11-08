@@ -54,7 +54,12 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('presensi.index') }}">
                     <i class="fas fa-light fa-qrcode"></i>
-                    <span>Absen</span></a>
+                    <span>Absen Berangkat</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('presensi-pulang.index') }}">
+                    <i class="fas fa-light fa-qrcode"></i>
+                    <span>Absen Pulang</span></a>
             </li>
             @endif
             </ul>

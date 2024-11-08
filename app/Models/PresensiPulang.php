@@ -6,27 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Presensi extends Model
+class PresensiPulang extends Model
 {
     use HasFactory;
-
     protected $fillable = ['id_user','nama','jabatan','face', 'tanggal', 'jam', 'latitude', 'longitude'];
 
     public static function boot() {
         parent::boot();
-        static::creating(function (Presensi $presensi) {
+        static::creating(function (PresensiPulang $presensi) {
             $presensi->uuid = Str::uuid()->toString();
         });
     }
-
-    // Dalam model Presensi
-    public function presensiPulang()
-    {
-        return $this->hasMany(PresensiPulang::class, 'nama', 'nama')
-                    ->whereColumn('tanggal', 'tanggal')
-                    ->whereColumn('jabatan', 'jabatan');
-    }
-
 
     public function User(){
         return $this->belongsTo(User::class, 'id_user');

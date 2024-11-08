@@ -28,51 +28,25 @@
         <h6 class="m-0 font-weight-bold text-primary">Rekap Data</h6>
         <div class="card shadow mb-4">
             <div class="card-body">
+                <!-- Tampilkan detail data di sini -->
                 <table class="table">
                     <thead>
                         <tr>
                             <th>Foto</th>
                             <th>Lokasi</th>
                             <th>Waktu</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($dataPresensi as $presensi)
+                        @foreach($dataPresensi as $presensi) <!-- Ganti dengan nama variabel yang sesuai -->
                         <tr>
-                            <td>
-                                @if($presensi->face) 
-                                    <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px;">
-                                @else
-                                    <span>Foto tidak tersedia</span>
-                                @endif
+                        <td>
+                                    <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px; transform: scaleX(1);">
                             </td>
-                            <td>{{ $presensi->lokasi ?? 'Lokasi tidak tersedia' }}</td>
-                            <td>{{ $presensi->jam ?? 'Waktu tidak tersedia' }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <table class="table">
-                    {{-- <thead>
-                        <tr>
-                            <th>Foto</th>
-                            <th>Lokasi</th>
-                            <th>Waktu</th>
-                        </tr>
-                    </thead> --}}
-                    <tbody>
-                        @foreach($dataPresensiPulang as $presensiPulang)
-                        <tr>
-                            <td>
-                                @if($presensiPulang->face) 
-                                    <img src="{{ asset('storage/' . $presensiPulang->face) }}" alt="Foto Presensi Pulang" style="width: 100px; height: 92px;">
-                                @else
-                                    <span>Foto tidak tersedia</span>
-                                @endif
-                            </td>
-                            <td>{{ $presensiPulang->lokasi ?? 'Lokasi tidak tersedia' }}</td>
-                            <td>{{ $presensiPulang->jam ?? 'Waktu tidak tersedia' }}</td>
+                            <td>{{ $presensi->lokasi }}</td>
+                            <td>{{ $presensi->jam }}</td>
+                            
                         </tr>
                         @endforeach
                     </tbody>
@@ -80,5 +54,9 @@
             </div>
         </div>
     </div>
+
+    
 </div>
+
+
 @endsection

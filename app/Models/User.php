@@ -46,4 +46,8 @@ class User extends Authenticatable
     public function Presensi(){
         return $this->hasMany(Presensi::class);
     }
+
+    public function PresensiPulang(){
+        return $this->hasMany(PresensiPulang::class);
+    }
 }
