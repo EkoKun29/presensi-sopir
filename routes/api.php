@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/presensi/{startDate}/{endDate}',[ExportDataController::class, 'absen']);
+
+Route::get('/presensi-pulang/{startDate}/{endDate}',[ExportDataController::class, 'absenpulang']);
