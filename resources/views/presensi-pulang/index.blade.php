@@ -188,7 +188,7 @@
                                             <th>#</th>
                                             <th>Tanggal</th>
                                             <th>Jam</th>
-                                            <th>Lokasi</th>
+                                            {{-- <th>Lokasi</th> --}}
                                             <th>Ket</th>
                                         </tr>
                                     </thead>
@@ -199,7 +199,7 @@
                                             <td style="text-align:center">{{ $no++ }}</td>
                                             <td>{{ \Carbon\Carbon::parse($p->created_at)->format('Y-m-d') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($p->created_at)->format('H:i') }}</td>
-                                            <td>{{ $p->lokasi}}</td>
+                                            {{-- <td>{{ $p->lokasi}}</td> --}}
                                             <td>
                                                 @php
                                                     $time = \Carbon\Carbon::parse($p->created_at)->format('H:i');
@@ -244,8 +244,8 @@
     const photoInput = document.getElementById('photoInput');
     const shutterSound = document.getElementById('shutterSound');
     const saveButtonContainer = document.getElementById('saveButtonContainer');
-    const latitudeInput = document.getElementById('latitudeInput');
-    const longitudeInput = document.getElementById('longitudeInput');
+    // const latitudeInput = document.getElementById('latitudeInput');
+    // const longitudeInput = document.getElementById('longitudeInput');
     const closeCanvasButton = document.getElementById('closeCanvasButton');
 
     // Accessing the webcam
@@ -277,26 +277,26 @@
         photoInput.value = canvas.toDataURL('image/png');
 
         // Retrieve location (latitude and longitude)
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    latitudeInput.value = position.coords.latitude;
-                    longitudeInput.value = position.coords.longitude;
-                    console.log('Latitude:', position.coords.latitude, 'Longitude:', position.coords.longitude);
-                },
-                (error) => {
-                    console.error("Error obtaining location:", error);
-                    alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.");
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                }
-            );
-        } else {
-            alert("Geolocation tidak didukung oleh browser Anda.");
-        }
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(
+        //         (position) => {
+        //             latitudeInput.value = position.coords.latitude;
+        //             longitudeInput.value = position.coords.longitude;
+        //             console.log('Latitude:', position.coords.latitude, 'Longitude:', position.coords.longitude);
+        //         },
+        //         (error) => {
+        //             console.error("Error obtaining location:", error);
+        //             alert("Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.");
+        //         },
+        //         {
+        //             enableHighAccuracy: true,
+        //             timeout: 10000,
+        //             maximumAge: 0
+        //         }
+        //     );
+        // } else {
+        //     alert("Geolocation tidak didukung oleh browser Anda.");
+        // }
     });
 
     // Close canvas view when "Cancel" button is clicked

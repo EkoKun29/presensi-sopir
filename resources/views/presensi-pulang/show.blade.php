@@ -33,7 +33,7 @@
                     <thead>
                         <tr>
                             <th>Foto</th>
-                            <th>Lokasi</th>
+                            {{-- <th>Lokasi</th> --}}
                             <th>Waktu</th>
                             
                         </tr>
@@ -44,7 +44,7 @@
                         <td>
                                     <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px; transform: scaleX(1);">
                             </td>
-                            <td>{{ $presensi->lokasi }}</td>
+                            {{-- <td>{{ $presensi->lokasi }}</td> --}}
                             <td>{{ $presensi->jam }}</td>
                             
                         </tr>

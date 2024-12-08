@@ -20,8 +20,8 @@
                 <!-- Input hidden untuk menyimpan gambar -->
                 <input type="hidden" name="photo" id="photoInput">
                 <!-- Input hidden untuk latitude dan longitude -->
-                <input type="hidden" name="latitude" id="latitudeInput">
-                <input type="hidden" name="longitude" id="longitudeInput">
+                {{-- <input type="hidden" name="latitude" id="latitudeInput">
+                <input type="hidden" name="longitude" id="longitudeInput"> --}}
                 <!-- Tombol simpan baru muncul setelah gambar ditangkap -->
                 <div class="modal-footer" id="saveButtonContainer" style="display: none;">
                     <button type="submit" class="btn btn-outline-danger">Save Foto</button>

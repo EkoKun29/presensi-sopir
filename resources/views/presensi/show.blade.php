@@ -32,7 +32,7 @@
                     <thead>
                         <tr>
                             <th>Foto</th>
-                            <th>Lokasi</th>
+                            {{-- <th>Lokasi</th> --}}
                             <th>Waktu</th>
                         </tr>
                     </thead>
@@ -46,7 +46,7 @@
                                     <span>Foto tidak tersedia</span>
                                 @endif
                             </td>
-                            <td>{{ $presensi->lokasi ?? 'Lokasi tidak tersedia' }}</td>
+                            {{-- <td>{{ $presensi->lokasi ?? 'Lokasi tidak tersedia' }}</td> --}}
                             <td>{{ $presensi->jam ?? 'Waktu tidak tersedia' }}</td>
                         </tr>
                         @endforeach
@@ -71,11 +71,11 @@
                                     <span>Foto tidak tersedia</span>
                                 @endif
                             </td>
-                            <td>{{ $presensiPulang->lokasi ?? 'Lokasi tidak tersedia' }}</td>
+                            {{-- <td>{{ $presensiPulang->lokasi ?? 'Lokasi tidak tersedia' }}</td> --}}
                             <td>{{ $presensiPulang->jam ?? 'Waktu tidak tersedia' }}</td>
                         </tr>
                         @endforeach
-                    </tbody>
+                    </tbody>    
                 </table>
             </div>
         </div>
