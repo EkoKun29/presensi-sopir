@@ -32,8 +32,8 @@
                     <thead>
                         <tr>
                             <th>Foto</th>
-                            {{-- <th>Lokasi</th> --}}
                             <th>Waktu</th>
+                            <th>Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,20 +48,14 @@
                             </td>
                             {{-- <td>{{ $presensi->lokasi ?? 'Lokasi tidak tersedia' }}</td> --}}
                             <td>{{ $presensi->jam ?? 'Waktu tidak tersedia' }}</td>
+                            <td>{{ $presensi->keterangan }}</td>
                         </tr>
                         @endforeach
-                    </tbody>
+                    {{-- </tbody>
                 </table>
 
                 <table class="table">
-                    {{-- <thead>
-                        <tr>
-                            <th>Foto</th>
-                            <th>Lokasi</th>
-                            <th>Waktu</th>
-                        </tr>
-                    </thead> --}}
-                    <tbody>
+                    <tbody> --}}
                         @foreach($dataPresensiPulang as $presensiPulang)
                         <tr>
                             <td>
@@ -73,6 +67,7 @@
                             </td>
                             {{-- <td>{{ $presensiPulang->lokasi ?? 'Lokasi tidak tersedia' }}</td> --}}
                             <td>{{ $presensiPulang->jam ?? 'Waktu tidak tersedia' }}</td>
+                            <td>{{ $presensiPulang->keterangan }}</td>
                         </tr>
                         @endforeach
                     </tbody>    

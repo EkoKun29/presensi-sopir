@@ -12,6 +12,15 @@
                 <div class="modal-body d-flex justify-content-center position-relative">
                     <video id="video" autoplay></video>
                     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+                    <div class="modal-body d-flex justify-content-center position-relative">
+                        <label for="exampleInputEmail1">Jenis Jam Pulang<span class="text-danger">*</span></label>
+                        <select class="form-control bg-primary text-white" name="keterangan" required>
+                            <option selected disabled value="" class="text-muted">Pilih Jam Pulang</option>
+                            <option value="PULANG WINONG">PULANG WINONG</option>
+                            <option value="PULANG JEMBER">PULANG JEMBER</option>
+                            <option value="PULANG HOTEL">PULANG HOTEL</option>
+                        </select>
+                    </div>
                     <button id="snap" type="button" class="camera-btn">
                         <i class="fas fa-camera"></i>
                     </button>

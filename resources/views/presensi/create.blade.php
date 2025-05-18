@@ -12,6 +12,18 @@
                 <div class="modal-body d-flex justify-content-center position-relative">
                     <video id="video" autoplay></video>
                     <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+
+                    <div class="modal-body d-flex justify-content-center position-relative">
+                        <label for="exampleInputEmail1">Jenis Berangkat<span
+                                class="text-danger">*</span></label>
+                        <select class="form-control" name="keterangan" required>
+                            <option selected disabled value="" class="text-muted">Pilih Jam Berangkat</option>
+                            <option value="BERANGKAT WINONG">BERANGKAT WINONG</option>
+                            <option value="BERANGKAT JEMBER">BERANGKAT JEMBER</option>
+                            <option value="BERANGKAT HOTEL">BERANGKAT HOTEL</option>
+                        </select>
+                    </div>
+
                     <button id="snap" type="button" class="camera-btn">
                         <i class="fas fa-camera"></i>
                     </button>
@@ -19,9 +31,12 @@
                 </div>
                 <!-- Input hidden untuk menyimpan gambar -->
                 <input type="hidden" name="photo" id="photoInput">
+
                 <!-- Input hidden untuk latitude dan longitude -->
                 {{-- <input type="hidden" name="latitude" id="latitudeInput">
                 <input type="hidden" name="longitude" id="longitudeInput"> --}}
+
+                
                 <!-- Tombol simpan baru muncul setelah gambar ditangkap -->
                 <div class="modal-footer" id="saveButtonContainer" style="display: none;">
                     <button type="submit" class="btn btn-outline-danger">Save Foto</button>

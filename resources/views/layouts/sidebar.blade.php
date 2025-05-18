@@ -26,8 +26,8 @@
 
             <a class="sidebar-brand d-flex align-items-center user-info user-image" href="{{ route('home') }}">
                 
-                    <img src="{{ asset('assets/img/logo aliansyah.jpeg') }}" alt="Aliansyah Logo" class="img-circle">
-                    <span class="sidebar-brand-text mx-2 user-name">{{ Auth::user()->name }}</span>
+                    <img src="{{ asset('assets/img/logo aliansyah.jpeg') }}" alt="Aliansyah Logo" class="img-circle" style="width: 30px ; height:auto">
+                    <span class="sidebar-brand-text mx-2 user-name" style="font-size:15px ">{{ Auth::user()->name }}</span>
                    
             </a>
 

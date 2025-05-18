@@ -33,19 +33,17 @@
                     <thead>
                         <tr>
                             <th>Foto</th>
-                            {{-- <th>Lokasi</th> --}}
                             <th>Waktu</th>
-                            
+                            <th>Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataPresensi as $presensi) <!-- Ganti dengan nama variabel yang sesuai -->
                         <tr>
-                        <td>
-                                    <img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px; transform: scaleX(1);">
-                            </td>
+                        <td><img src="{{ asset('storage/' . $presensi->face) }}" alt="Foto Presensi" style="width: 100px; height: 92px; transform: scaleX(1);"></td>
                             {{-- <td>{{ $presensi->lokasi }}</td> --}}
                             <td>{{ $presensi->jam }}</td>
+                            <td>{{ $presensi->keterangan }}</td>
                             
                         </tr>
                         @endforeach

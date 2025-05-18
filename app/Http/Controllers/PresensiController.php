@@ -120,6 +120,7 @@ class PresensiController extends Controller
 
     // Simpan nama file ke database
     $presensi->face = $fileName; // Simpan hanya nama file
+    $presensi->keterangan = $request->keterangan;
     $presensi->save();
 
     return redirect()->route('presensi.index')->with('success', 'Presensi berhasil disimpan!');

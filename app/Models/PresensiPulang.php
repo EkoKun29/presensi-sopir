@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class PresensiPulang extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_user','nama','jabatan','face', 'tanggal', 'jam', 'latitude', 'longitude'];
+    protected $fillable = ['id_user','nama','jabatan','face', 'tanggal', 'jam', 'latitude', 'longitude', 'keterangan'];
 
     public static function boot() {
         parent::boot();

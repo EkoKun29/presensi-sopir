@@ -191,8 +191,9 @@
                                             <th>#</th>
                                             <th>Tanggal</th>
                                             <th>Jam</th>
+                                            <th>Ket.Waktu</th>
+                                            <th>Ket.Berangkat</th>
                                             {{-- <th>Lokasi</th> --}}
-                                            <th>Ket</th>
                                         </tr>
                                     </thead>
                                     <?php $no =1 ; ?>
@@ -220,7 +221,7 @@
                                                     Tidak diketahui
                                                 @endif
                                             </td>
-            
+                                            <td>{{ $p->keterangan }}</td>
                                             
                                         </tr>
                                     @endforeach
