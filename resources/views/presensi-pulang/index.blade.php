@@ -95,7 +95,7 @@
             <div class="card shadow mb-4">
     <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-primary">Rekap Presensi Lapangan</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Rekap Presensi Pulang</h6>
     </div>
     <br>
     <form action="{{ route('absensi-pulang.search') }}" method="GET" class="form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
