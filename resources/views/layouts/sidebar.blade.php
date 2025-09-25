@@ -50,6 +50,12 @@
                     <i class="fas fa-light fa-qrcode"></i>
                     <span>Rekap Presensi</span></a>
             </li>
+            @elseif(Auth::user()->role== 'koordinator')
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('do.index') }}">
+                    <i class="fas fa-light fa-qrcode"></i>
+                    <span>Do Sales</span></a>
+            </li>
             @else
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('presensi.index') }}">

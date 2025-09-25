@@ -20,6 +20,8 @@
                                     <option value="sopir">Sopir</option>
                                     <option value="helper">Helper</option>
                                     <option value="sales">Sales</option>
+                                    <option value="koordinator">Koordinator</option>
+                                    <option value="dropper">Dropper</option>
                                 </select>
                             </div>
                         </div>

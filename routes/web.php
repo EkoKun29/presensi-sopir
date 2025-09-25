@@ -7,6 +7,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PresensiPulangController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,19 @@ Route::resource('presensi-pulang', PresensiPulangController::class);
 Route::get('presensi-pulang/search', [PresensiPulangController::class, 'search'])->name('absensi-pulang.search');
 Route::get('presensi-pulang/{nama}/{tanggal}', [PresensiPulangController::class, 'show'])->name('presensi-pulang.show.detail');
 Route::get('presensi-pulang/{nama}/{tanggal}/delete', [PresensiPulangController::class, 'delete'])->name('presensi-pulang.delete.detail');
+
+Route::resource('do', DoController::class);
+Route::get('detail-do/{id}', [DoController::class, 'detail_store'])->name('do.detailStore');
+Route::get('edit-detail-2/{id}', [DoController::class, 'edit2'])->name('do.edit2');
+Route::get('edit-kop-do/{id}', [DoController::class, 'edit_kop_do'])->name('do.editKopDo');
+Route::get('hapus-do/{id}', [DoController::class, 'hapus_do'])->name('do.hapusSurat');
+Route::post('simpan-detail-do/{id}', [DoController::class, 'simpan_detail_store'])->name('do.simpanDetailStore');
+Route::post('update-detail-do/{id}', [DoController::class, 'update2'])->name('do.update2');
+Route::post('update-kop-do/{id}', [DoController::class, 'update_kop'])->name('do.updateKop');
+
+
+
+
 
 //----------------------------------------------------------Tambah User--------------------------------------------
 Route::resource('tambah-user', UserController::class);
