@@ -68,6 +68,7 @@
                         <th>Nomor Surat</th>
                         <th>Sales</th>
                         <th>Kios</th>
+                        <th>Yang Bawa</th>
                         <th>Produk</th>
                         <th>Dus</th>
                         <th>Btl</th>
@@ -84,6 +85,7 @@
                         <td>{{ $p->do->nomor_surat }}</td>
                         <td>{{ $p->do->sales }}</td>
                         <td>{{ $p->do->kios }}</td>
+                        <td>{{ $p->do->yang_bawa }}</td>
                         <td>{{ $p->produk }}</td>
                         <td>{{ $p->dus }}</td>
                         <td>{{ $p->btl }}</td>

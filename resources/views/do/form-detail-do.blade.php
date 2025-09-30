@@ -80,19 +80,19 @@
                                       </div>
                                       <div class="form-group">
                                           <label for="exampleInputEmail1">Dus</label>
-                                          <input type="number" class="form-control" id="yourInput" name="dus" placeholder="Masukkan dus">
+                                          <input type="number" class="form-control" id="yourInput" name="dus" placeholder="Masukkan dus" required="">
                                           
                                           
                                       </div>
                                       <div class="form-group">
                                           <label for="exampleInputEmail1">Btl</label>
-                                          <input type="number" class="form-control" id="yourInput" name="btl" placeholder="Masukkan btl">
+                                          <input type="number" class="form-control" id="yourInput" name="btl" placeholder="Masukkan btl" required="">
                                           
                                           
                                       </div>
                                       <div class="form-group">
                                           <label for="exampleInputEmail1">Harga</label>
-                                          <input type="number" class="form-control" id="yourInput" name="harga" placeholder="Masukkan Harga">
+                                          <input type="number" class="form-control" id="yourInput" name="harga" placeholder="Masukkan Harga" required="">
                                           
                                           
                                       </div>
