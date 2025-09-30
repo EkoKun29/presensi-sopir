@@ -7,6 +7,8 @@ use App\Models\Presensi;
 use App\Models\PresensiPulang;
 use App\Models\DetailSalesDo;
 use Illuminate\Http\Request;
+use Auth;
+
 
 class ExportDataController extends Controller
 {
