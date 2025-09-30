@@ -45,6 +45,7 @@ Route::get('presensi-pulang/{nama}/{tanggal}', [PresensiPulangController::class,
 Route::get('presensi-pulang/{nama}/{tanggal}/delete', [PresensiPulangController::class, 'delete'])->name('presensi-pulang.delete.detail');
 
 Route::resource('do', DoController::class);
+Route::get('index-produk-do', [DoController::class, 'index_produk'])->name('do.indexProduk');
 Route::get('detail-do/{id}', [DoController::class, 'detail_store'])->name('do.detailStore');
 Route::get('edit-detail-2/{id}', [DoController::class, 'edit2'])->name('do.edit2');
 Route::get('edit-kop-do/{id}', [DoController::class, 'edit_kop_do'])->name('do.editKopDo');

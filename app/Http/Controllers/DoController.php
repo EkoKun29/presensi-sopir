@@ -18,8 +18,16 @@ class DoController extends Controller
      */
     public function index()
     {
-        $do = SalesDo::orderBy('id')->where('id_user', Auth::id())->paginate(10);
+        $do = SalesDo::orderBy('id', 'DESC')->where('id_user', Auth::id())->paginate(10);
         return view('do.index', compact('do'));
+    }
+
+    public function index_produk()
+    {
+        $do = DetailSalesDo::orderBy('id', 'DESC')->with('do')->whereHas('do', function ($q)  {
+                    $q->where('id_user', Auth::id());
+                })->paginate(10);
+        return view('do.index-produk-do', compact('do'));
     }
 
     /**
@@ -39,6 +47,17 @@ class DoController extends Controller
         $data1 = json_decode($response1->getBody());
         $sales = collect($data1);
 
+        $clientHelper = new Client();
+
+        $apiHelper = 'https://gudangal.com/api/helper';
+
+        $responseHelper = $clientHelper->request('GET', $apiHelper, [
+            'verify'  => false,
+        ]);
+
+        $dataHelper = json_decode($responseHelper->getBody());
+        $helper = collect($dataHelper);
+
 
         $client = new Client();
 
@@ -50,7 +69,7 @@ class DoController extends Controller
 
         $data = json_decode($response->getBody());
         $kios = collect($data);
-        return view('do.create', compact('kios','sales'));
+        return view('do.create', compact('kios','sales', 'helper'));
     }
 
     /**
@@ -70,6 +89,7 @@ class DoController extends Controller
         $do->kios = $request->kios;
         $do->id_user = Auth::id();
         $do->nomor_surat = $kode;
+        $do->yang_bawa = $request->dropper;
         $do->save();
 
         return redirect()->route('do.detailStore', $do->id);
@@ -107,17 +127,18 @@ class DoController extends Controller
         $total = $request->dus * $produk['isi_perdus'] + $request->btl;
 
         $client = new Client();
-        $url = "https://script.google.com/macros/s/AKfycbzcqV8Ae4s_ZKgYdufJmI1BBwwTxsV7hHmPP7Te7GfA_GhQFDhRVoed_MOuV3eFNdqc/exec?nama_produk=" . urlencode(strtolower($produk['nama']));
+        // Spreadsheet GetApiHpp
+        $url = "https://script.google.com/macros/s/AKfycby6kc44muAWC8NRp5TZasAutyR_ifHi2g75DUr_xElUnqv8GrcnxEw3bba43jhNIPpp/exec?nama_produk=" . urlencode(strtolower($produk['nama']));
 
-        // dd($url);
 
         $response = $client->request('GET', $url, [
             'verify'  => false,
         ]);
         $data = json_decode($response->getBody());
         $barang = collect($data);
+        // dd($url, $barang['harga']);
 
-        $laba = ($total * $request->harga) - ($total * $barang['harga']);
+        $laba = ($total * (int)$request->harga) - ($total * (int)$barang['harga']);
 
         // dd($barang['harga'], $url);
         

@@ -56,6 +56,12 @@
                     <i class="fas fa-light fa-qrcode"></i>
                     <span>Do Sales</span></a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ route('do.indexProduk') }}">
+                    <i class="fas fa-light fa-qrcode"></i>
+                    <span>Produk Do Sales</span></a>
+            </li>
+            
             @else
             <li class="nav-item active">
                 <a class="nav-link" href="{{ route('presensi.index') }}">

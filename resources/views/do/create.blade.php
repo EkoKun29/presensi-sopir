@@ -90,6 +90,25 @@
                                               {{-- @endforeach --}}
                                           </select>
                                       </div>
+
+                                      <div class="form-group">
+                                          <label for="exampleInputEmail1">Yang Bawa</label>
+                                          {{-- <input type="text" class="form-control" id="yourInput" placeholder="Masukkan nama barang">
+                                          <ul id="optionList"></ul> --}}
+                                          <select id="select-helper" name="dropper" autocomplete="off" required >
+                                              <option value="" selected>Yang Bawa</option>
+                                              {{-- @foreach ($dataApi as $b) --}}
+                                                  {{-- @if(is_array($b))
+                                                      <option value="{{ $b['barang'] }}">{{ $b['barang'] }}</option>
+                                                  @elseif(is_object($b))
+                                                      <option value="{{ $b->barang }}">{{ $b->barang }}</option>
+                                                  @endif --}}
+                                                  @foreach($helper as $h2)
+                                                      <option value="{{ $h2->helper }}">{{ $h2->helper }}</option>
+                                                  @endforeach
+                                              {{-- @endforeach --}}
+                                          </select>
+                                      </div>
                                       
                                       
                                     </div>
@@ -115,6 +134,10 @@
         });
 
         new TomSelect("#select-sales", {
+            create: false,
+        });
+
+        new TomSelect("#select-helper", {
             create: false,
         });
     </script>

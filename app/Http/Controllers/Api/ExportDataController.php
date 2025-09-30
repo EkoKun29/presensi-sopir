@@ -18,4 +18,12 @@ class ExportDataController extends Controller
         $presensi_pulang = PresensiPulang::whereBetween('created_at', [$startDate, $endDate])->get();
         return response()->json($presensi_pulang);
     }
+
+    public function do_sales($startDate, $endDate){
+    	$do = DetailSalesDo::with('do')->whereHas('do', function ($q) use ($startDate, $endDate)  {
+                    $q->where('id_user', Auth::id())->whereBetween('created_at', [$startDate, $endDate]);
+                })->get();
+        return response()->json($do);
+
+    }
 }
