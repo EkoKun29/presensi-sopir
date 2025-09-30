@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Presensi;
 use App\Models\PresensiPulang;
+use App\Models\DetailSalesDo;
 use Illuminate\Http\Request;
 
 class ExportDataController extends Controller
