@@ -24,7 +24,7 @@ class ExportDataController extends Controller
 
     public function do_sales($startDate, $endDate){
     	$do = DetailSalesDo::with('do')->whereHas('do', function ($q) use ($startDate, $endDate)  {
-                    $q->where('id_user', Auth::id())->whereBetween('created_at', [$startDate, $endDate]);
+                    $q->whereBetween('created_at', [$startDate, $endDate]);
                 })->get();
         return response()->json($do);
 
