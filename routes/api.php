@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\ExportDataController;
+use App\Http\Controllers\Api\ExportDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +23,6 @@ Route::get('/presensi/{startDate}/{endDate}',[ExportDataController::class, 'abse
 
 Route::get('/presensi-pulang/{startDate}/{endDate}',[ExportDataController::class, 'absenpulang']);
 Route::get('/sales-do/{startDate}/{endDate}',[ExportDataController::class, 'do_sales']);
+
+Route::get('/sales-do-new/{startDate}/{endDate}',[ExportDataController::class, 'do_sales_new']);
 

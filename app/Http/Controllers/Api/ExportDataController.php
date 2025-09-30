@@ -29,4 +29,12 @@ class ExportDataController extends Controller
         return response()->json($do);
 
     }
+
+    public function do_sales_new($startDate,$endDate){
+    	$do = DetailSalesDo::with('do')
+    		->whereDate('created_at', '>=', $startDate)
+    		->whereDate('created_at', '<=', $endDate)
+    		->get();
+    	return response()->json($do);
+    }
 }
